@@ -3,6 +3,8 @@ public Paciente() {
         cargarCbx();
         FtnBuscarBD();
     }
+    
+    //boton limpiar
      public void limpiar() 
     {
         txtDocumento.setText("");
