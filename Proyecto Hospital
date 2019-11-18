@@ -3,16 +3,7 @@ public Paciente() {
         cargarCbx();
         FtnBuscarBD();
     }
-     public void limpiar() 
-    {
-        txtDocumento.setText("");
-        txtNombre.setText("");
-        txtApellido.setText("");
-        txtFechadeNacimiento.setText("");
-        txtCorreo.setText("");
-        txtTelefono.setText("");
-        cbxEps.setSelectedIndex(-1);
-       
+  
     }
     public void FtnBuscarBD2(){
         DefaultTableModel modelo = new DefaultTableModel();
