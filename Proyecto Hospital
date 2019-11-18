@@ -1,0 +1,127 @@
+public Paciente() {
+        initComponents();
+        cargarCbx();
+        FtnBuscarBD();
+    }
+     public void limpiar() 
+    {
+        txtDocumento.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtFechadeNacimiento.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
+        cbxEps.setSelectedIndex(-1);
+       
+    }
+    public void FtnBuscarBD2(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Documento");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Fecha de Nacimiento");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Telefono");
+        modelo.addColumn("Eps");
+        Conexion con = new Conexion();
+        Connection cnx = con.conectar();
+       
+        String id = txtDocumento.getText();
+       
+        try {
+            Statement st = cnx.createStatement();
+            ResultSet rs = st.executeQuery("SELECT p.PKDocumento, p.Nombre, p.Apellido, p.FechaNacimiento, p.Correo, p.Telefono, e.Descripcion FROM tblpacientes p, tbleps e WHERE p.FKCodigo_TblEps = e.PKCodigo" );
+           
+             while (rs.next()) {
+                
+                String [] fila = new String[7];
+            fila[0] = rs.getString(1);
+            fila[1] = rs.getString(2);
+            fila[2] = rs.getString(3);
+            fila[3] = rs.getString(4);
+            fila[4] = rs.getString(5);
+            fila[5] = rs.getString(6);
+            fila[6] = rs.getString(7);
+        
+        modelo.addRow(fila);
+        Tabla.setModel(modelo);
+      
+                
+            }
+
+        } catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+        }
+     }
+    public void FtnBuscarBD(){
+           DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Documento");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Fecha de Nacimiento");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Telefono");
+        modelo.addColumn("Eps");
+           Conexion con = new Conexion();
+        Connection cnx = con.conectar();
+       
+        String id = txtDocumento.getText();
+        if(txtDocumento.getText().isEmpty()){
+            FtnBuscarBD2();
+        }
+        else{
+       
+        try {
+            Statement st = cnx.createStatement();
+            ResultSet rs = st.executeQuery("SELECT p.PKDocumento, p.Nombre, p.Apellido, p.FechaNacimiento, p.Correo, p.Telefono, e.Descripcion FROM tblpacientes p, tbleps e WHERE p.FKCodigo_TblEps = e.PKCodigo");
+           
+             while (rs.next()) {
+                
+                String [] fila = new String[7];
+            fila[0] = rs.getString(1);
+            fila[1] = rs.getString(2);
+            fila[2] = rs.getString(3);
+            fila[3] = rs.getString(4);
+            fila[4] = rs.getString(5);
+            fila[5] = rs.getString(6);
+            fila[6] = rs.getString(7);
+        
+        modelo.addRow(fila);
+        Tabla.setModel(modelo);
+        
+      txtNombre.setText(fila[1]);
+      txtApellido.setText(fila[2]);
+      txtFechadeNacimiento.setText(fila[3]);
+      txtCorreo.setText(fila[4]);
+      txtTelefono.setText(fila[5]);
+      cbxEps.setSelectedItem(fila[6]);
+                
+            }
+
+        } catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+        }
+       }
+    }
+   
+   public void cargarCbx(){
+        
+        Conexion con = new Conexion();
+        com.mysql.jdbc.Connection cnx = con.conectar();
+        Statement st;
+        int dato = 0;
+
+
+        try {
+            st = cnx.createStatement();
+            ResultSet result = st.executeQuery("select Descripcion from tbleps ");
+            while (result.next()) {
+
+                cbxEps.addItem(result.getString("Descripcion"));
+                cbxEps.setSelectedIndex(-1);
+            }
+        } catch (SQLException ex) {
+            System.err.println("error1");
+        }
+        
+    }
